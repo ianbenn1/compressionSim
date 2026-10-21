@@ -1,0 +1,30 @@
+.controls {
+    display: flex;
+    flex-direction: row;
+}
+.controls * {
+    margin-left: 20px;
+}
+.controls input {
+    height: 25px;
+    margin-top: auto;
+    margin-bottom: auto;
+}
+.field {
+    display: flex;
+    flex-direction: column;
+}
+.maze-block {
+    height: 15px;
+    width: 15px;
+    border: 1px solid black;
+}
+
+.maze-line {
+    display: flex;
+    flex-direction: row;
+}
+
+.blocked-cell {
+    background-color: black;
+}

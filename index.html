@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="A compression simulator with various 'algorithms'">
+    <title>Compression simulator</title>
+    <!--Resources:-->
+    <link rel="stylesheet" type="text/css" href="style.css">
+</head>
+<body>
+    <div class="page">
+        
+        <div class="controls">
+            <div>
+                <h4>Visualize compression algorithms in a monochrome 'image'</h4>
+                <p>Resolution</p>
+                <div class="maze-line">
+                    <p>Height:</p>
+                    <input type="text" id="maze-height" placeholder="30">
+                    <p>Width:</p>
+                    <input type="text" id="maze-width" placeholder="30">
+                </div>
+            </div>
+            
+            <button type="button" id="build" style="padding: 15px;">Build</button>
+            <h1>|</h1>
+            <select name="compressiontype" id="compressiontype">
+                <option value="fixed">Fixed pattern</option>
+                <option value="pointer">Pattern pointer</option>
+            </select>
+            <button type="button" id="compress" style="background-color: #a1ccbe; padding: 15px;">Compress</button>
+        </div>
+        <br />
+        <div class="field">
+        </div>
+        <br />
+        <div id="originalSize">Original pixels:</div>
+        <div id="compressedSize">Compressed pixels:</div>
+    </div>
+    <script src="index.js"></script>
+</body>
+</html>
