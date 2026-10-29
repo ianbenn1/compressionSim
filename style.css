@@ -28,3 +28,10 @@
 .blocked-cell {
     background-color: black;
 }
+
+.fieldContainer {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    justify-content: space-between;
+}

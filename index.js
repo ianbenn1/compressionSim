@@ -62,26 +62,101 @@ async function mazeBuilder(x, y) {
 
 function fixedSolver (maze_size_x, maze_size_y, x, y, rev, colour, skip) {
     let field = document.getElementsByClassName('field')[0];
-    console.log("ping 2");
+    
+    let compressedMaze = [];
+
     for(let i = 0; i < maze_size_x; i++)
     {
         // console.log("ping 3");
         // let row = document.getElementsByClassName(`line${i}`)[0];
         let row = document.getElementsByClassName(`line${i}`)[0];
         // console.log(`in solver got row ${row}`);
-
+        let whiteInARow = 0;
+        let blackInARow = 0;
+        let compressedRow = []
         for(let j = 0; j < maze_size_y; j++)
         {
             let cell = document.getElementsByClassName(`cell${i}-${j}`)[0];
-            if(cell.className.toString().indexOf("blocked-cell") != -1) console.log("BLACK")
-            else console.log("WHITE")
+            if(cell.className.toString().indexOf("blocked-cell") != -1) {
+                blackInARow++;
+                if(whiteInARow > 0) {
+                    console.log(`was up to ${whiteInARow} white`);
+                    compressedRow.push(`{"c": "w", "n": ${whiteInARow}}`);
+                    whiteInARow = 0;
+                }
+                console.log("BLACK");
+            }
+            else {
+                whiteInARow++;
+                if(blackInARow > 0) {
+                    console.log(`was up to ${blackInARow} black`);
+                    compressedRow.push(`{"c": "b", "n": ${blackInARow}}`);
+                    blackInARow = 0;
+                }
+                console.log("WHITE");
+            }
             //console.log("Creating cell " + j + " in row " + i);
             // let cell = document.createElement("div");
             // cell.className = "maze-block cell" + i + "-" + j;
             // cell.dataset.taken = "false";
             // row.appendChild(cell);
         }
+        if(whiteInARow == maze_size_y) {
+            compressedRow.push(`{"c": "w", "n": ${whiteInARow}}`);
+        } else if (blackInARow == maze_size_y) {
+            compressedRow.push(`{"c": "b", "n": ${blackInARow}}`);
+        }
+        compressedMaze.push(compressedRow);
     }
+    writeCompressedMaze2(compressedMaze);
+}
+
+function writeCompressedMaze(compressedMaze) {
+    let x = compressedMaze.length;
+    console.log("WriteCompressedMaze");
+    for(let i = 0; i < x; i++)
+    {
+        let y = compressedMaze[i].length;
+        for(let j = 0; j < y; j++)
+        {
+            console.log(compressedMaze[i][j]);
+        }
+    }
+}
+
+function writeCompressedMaze2(compressedMaze) {
+    let field = document.getElementsByClassName('compressedField')[0];
+    field.innerHTML = "";
+    let totalpx = 0;
+
+    let x = compressedMaze.length;
+
+    for(let i = 0; i < x; i++)
+    {
+        //console.log("Creating row " + i);
+        let rowElement = document.createElement("div");
+        rowElement.className = "maze-line line" + i;
+        field.appendChild(rowElement);
+        let row = document.getElementsByClassName('line' + i)[0];
+
+        let y = compressedMaze[i].length;
+        for(let j = 0; j < y; j++)
+        {
+            let cell = document.createElement("div");
+            // alert(JSON.parse(compressedMaze[i][j]).c);
+            if(JSON.parse(compressedMaze[i][j]).c == "b") {
+               cell.className = "blocked-cell maze-block cell" + i + "-" + j; 
+            } else {
+                cell.className = "maze-block cell" + i + "-" + j; 
+            }
+            cell.innerHTML = JSON.parse(compressedMaze[i][j]).n;
+            
+            cell.dataset.taken = "false";
+            row.appendChild(cell);
+            totalpx++;
+        }
+    }
+    document.getElementById("compressedSize").innerHTML = `Compressed pixels: ${totalpx}`;
 }
 
 function pointer (maze_size_x, maze_size_y, x, y) {
